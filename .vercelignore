@@ -1,0 +1,8 @@
+node_modules
+__tests__
+*.test.ts
+prisma/seed.ts
+*.md
+.gitignore
+Dockerfile*
+docker-compose*

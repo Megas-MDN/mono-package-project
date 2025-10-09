@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: project-uno-db
+    restart: always
+    environment:
+      POSTGRES_USER: megas
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-yourpassword}
+      POSTGRES_DB: monozao_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U megas -d monozao_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project-uno-app
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://megas:${DB_PASSWORD:-yourpassword}@db:5432/monozao_db
+      DIRECT_URL: postgresql://megas:${DB_PASSWORD:-yourpassword}@db:5432/monozao_db
+      JWT_SECRET: ${JWT_SECRET:-yourSecret}
+      X_SIGN: ${X_SIGN:-ultraSecretPassword}
+      VITE_X_SIGN: ${VITE_X_SIGN:-ultraSecretPassword}
+      VITE_BASE_URL: ${VITE_BASE_URL}
+      VITE_SOCKET_URL: ${VITE_SOCKET_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./prisma:/app/prisma
+      - app_uploads:/app/uploads
+    networks:
+      - app-network
+    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+
+volumes:
+  postgres_data:
+    driver: local
+  app_uploads:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
