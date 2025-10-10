@@ -44,6 +44,18 @@ services:
       - app_uploads:/app/uploads
     networks:
       - app-network
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`app.megas.uno`)"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.routers.portainer.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.docker.network=web"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     command: sh -c "npx prisma migrate deploy && node dist/index.js"
 
 volumes:
@@ -55,3 +67,5 @@ volumes:
 networks:
   app-network:
     driver: bridge
+  web:
+    external: true
