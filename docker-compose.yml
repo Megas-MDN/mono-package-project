@@ -37,8 +37,7 @@ services:
       VITE_BASE_URL: ${VITE_BASE_URL}
       VITE_SOCKET_URL: ${VITE_SOCKET_URL}
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     volumes:
       - ./prisma:/app/prisma
       - app_uploads:/app/uploads
@@ -47,16 +46,16 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`app.megas.uno`)"
-      - "traefik.http.routers.portainer.tls=true"
-      - "traefik.http.routers.portainer.tls.certresolver=lets-encrypt"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.http.routers.app.rule=Host(`app.megas.uno`)"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.routers.app.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.app.loadbalancer.server.port=3001"
       - "traefik.docker.network=web"
     logging:
       options:
         max-size: "10m"
         max-file: "3"
-    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+    command: sh -c "until pg_isready -h db -U megas -d monozao_db; do sleep 2; done && npx prisma migrate deploy && node dist/index.js"
 
 volumes:
   postgres_data:
