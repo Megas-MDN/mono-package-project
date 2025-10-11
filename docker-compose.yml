@@ -67,7 +67,6 @@ services:
       chmod +x /app/webhook-listener.sh &&
       /app/webhook-listener.sh"
     networks:
-      - app-network
       - web
     labels:
       - "traefik.enable=true"
