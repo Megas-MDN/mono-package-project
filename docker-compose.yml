@@ -50,6 +50,33 @@ services:
       - "traefik.http.routers.prisma-studio.middlewares=prisma-auth"
       - "traefik.http.middlewares.prisma-auth.basicauth.users=${PRISMA_BASIC_AUTH}"
 
+  auto-deployer:
+    image: alpine:latest
+    container_name: project-uno-auto-deployer
+    restart: always
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      REPO_URL: "https://github.com/Megas-MDN/mono-package-project.git"
+      BRANCH: "main"
+      SECRET_TOKEN: ${WEBHOOK_SECRET}
+    command: sh -c "
+      apk add --no-cache git bash curl docker-cli netcat-openbsd &&
+      chmod +x /app/webhook-listener.sh &&
+      /app/webhook-listener.sh"
+    networks:
+      - app-network
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auto-deployer.rule=Host(`webhook.megas.uno`)"
+      - "traefik.http.routers.auto-deployer.tls=true"
+      - "traefik.http.routers.auto-deployer.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.auto-deployer.loadbalancer.server.port=4080"
+      - "traefik.docker.network=web"
+
   app:
     build:
       context: .
@@ -93,33 +120,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-
-  auto-deployer:
-    image: alpine:latest
-    container_name: project-uno-auto-deployer
-    restart: always
-    working_dir: /app
-    volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      REPO_URL: "https://github.com/Megas-MDN/mono-package-project.git"
-      BRANCH: "main"
-      SECRET_TOKEN: ${WEBHOOK_SECRET:-supersecret}
-    command: sh -c "
-      apk add --no-cache git bash curl docker-cli netcat-openbsd &&
-      chmod +x /app/webhook-listener.sh &&
-      /app/webhook-listener.sh"
-    networks:
-      - app-network
-      - web
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.auto-deployer.rule=Host(`webhook.megas.uno`)"
-      - "traefik.http.routers.auto-deployer.tls=true"
-      - "traefik.http.routers.auto-deployer.tls.certresolver=lets-encrypt"
-      - "traefik.http.services.auto-deployer.loadbalancer.server.port=4080"
-      - "traefik.docker.network=web"
 
 volumes:
   postgres_data:
