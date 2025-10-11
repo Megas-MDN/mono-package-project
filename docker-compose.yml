@@ -56,6 +56,12 @@ services:
         max-size: "10m"
         max-file: "3"
     command: sh -c "until nc -z db 5432; do echo '⏳ Waiting for Postgres...'; sleep 2; done && echo '✅ Database ready!' && npx prisma migrate deploy && node dist/index.js"
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 3001"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   postgres_data:
