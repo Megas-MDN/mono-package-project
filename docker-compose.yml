@@ -55,7 +55,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    command: sh -c "until pg_isready -h db -U megas -d monozao_db; do sleep 2; done && npx prisma migrate deploy && node dist/index.js"
+    command: sh -c "until nc -z db 5432; do echo '⏳ Waiting for Postgres...'; sleep 2; done && echo '✅ Database ready!' && npx prisma migrate deploy && node dist/index.js"
 
 volumes:
   postgres_data:
