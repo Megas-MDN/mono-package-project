@@ -68,18 +68,15 @@ services:
       /app/webhook-listener.sh"
     networks:
       - web
+      - app-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.auto-deployer.rule=Host(`webhook.megas.uno`)"
+      - "traefik.http.routers.auto-deployer.rule=Host(`webhook.megas.uno`) || (Host(`app.megas.uno`) && PathPrefix(`/api/deploy/github`))"
       - "traefik.http.routers.auto-deployer.tls=true"
       - "traefik.http.routers.auto-deployer.tls.certresolver=lets-encrypt"
       - "traefik.http.services.auto-deployer.loadbalancer.server.port=4080"
       - "traefik.docker.network=web"
-    healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 4080 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+
 
   app:
     build:
