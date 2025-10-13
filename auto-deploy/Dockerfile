@@ -1,7 +1,7 @@
 FROM node:22-alpine
 
-# Instala dependências necessárias
-RUN apk add --no-cache git bash docker-cli
+# Instala dependências necessárias incluindo Docker Compose V2
+RUN apk add --no-cache git bash docker-cli docker-compose
 
 WORKDIR /app
 

@@ -49,7 +49,8 @@ function redeploy(res) {
     git fetch origin main &&
     git reset --hard origin/main &&
     echo "🔨 Rebuilding Docker stack..." &&
-    npm run dc:rebuild
+    docker-compose down &&
+    docker-compose up -d --build
   `;
 
   exec(command, { cwd: REPO_PATH }, (err, stdout, stderr) => {
