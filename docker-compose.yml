@@ -97,7 +97,9 @@ services:
       start_period: 10s
 
   auto-deploy:
-    image: node:22-alpine
+    build:
+      context: .
+      dockerfile: ./auto-deploy/Dockerfile
     container_name: project-uno-auto-deploy
     restart: always
     working_dir: /app
@@ -112,7 +114,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - web
-    command: sh -c "npm ci --omit=dev && node /app/auto-deploy/server.js"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auto-deploy.rule=Host(`webhook.megas.uno`)"
