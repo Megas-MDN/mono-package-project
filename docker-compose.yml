@@ -96,33 +96,6 @@ services:
       retries: 5
       start_period: 10s
 
-  auto-deploy:
-    build:
-      context: .
-      dockerfile: ./auto-deploy/Dockerfile
-    container_name: project-uno-auto-deploy
-    restart: always
-    working_dir: /app
-    ports:
-      - "4001:4001"
-    environment:
-      GITHUB_SECRET: ${SECRET_TOKEN:-yourWebhookSecret}
-      REPO_PATH: /app/mono-package-project
-      REPO_URL: ${REPO_URL:-https://github.com/Megas-MDN/mono-package-project.git}
-    volumes:
-      - ./:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - web
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.auto-deploy.rule=Host(`webhook.megas.uno`)"
-      - "traefik.http.routers.auto-deploy.tls=true"
-      - "traefik.http.routers.auto-deploy.tls.certresolver=lets-encrypt"
-      - "traefik.http.services.auto-deploy.loadbalancer.server.port=4001"
-      - "traefik.docker.network=web"
-
-
 volumes:
   postgres_data:
     driver: local
