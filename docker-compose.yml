@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: megas
       POSTGRES_PASSWORD: ${DB_PASSWORD:-yourpassword}
       POSTGRES_DB: monozao_db
+      TZ: "America/Sao_Paulo"
+      PGTZ: "America/Sao_Paulo"      
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
@@ -93,6 +95,32 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  auto-deploy:
+    image: node:22-alpine
+    container_name: project-uno-auto-deploy
+    restart: always
+    working_dir: /app
+    ports:
+      - "4001:4001"
+    environment:
+      GITHUB_SECRET: ${SECRET_TOKEN:-yourWebhookSecret}
+      REPO_PATH: /app/mono-package-project
+      REPO_URL: ${REPO_URL:-https://github.com/Megas-MDN/mono-package-project.git}
+    volumes:
+      - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - web
+    command: sh -c "npm ci --omit=dev && node /app/auto-deploy/server.js"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auto-deploy.rule=Host(`webhook.megas.uno`)"
+      - "traefik.http.routers.auto-deploy.tls=true"
+      - "traefik.http.routers.auto-deploy.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.auto-deploy.loadbalancer.server.port=4001"
+      - "traefik.docker.network=web"
+
 
 volumes:
   postgres_data:

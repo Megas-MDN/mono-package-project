@@ -1,5 +1,5 @@
 # Build stage - Frontend
-FROM node:23-alpine AS frontend-builder
+FROM node:22-alpine AS frontend-builder
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY app ./app
 RUN npm run build:client
 
 # Build stage - Backend
-FROM node:23-alpine AS backend-builder
+FROM node:22-alpine AS backend-builder
 
 WORKDIR /app
 
@@ -40,7 +40,7 @@ RUN npx prisma generate
 RUN npm run build:server
 
 # Production stage
-FROM node:23-alpine AS production
+FROM node:22-alpine AS production
 
 WORKDIR /app
 
