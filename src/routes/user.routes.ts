@@ -8,8 +8,13 @@ const BASE_PATH = API_VERSION.V1 + ROOT_PATH.USER; // /api/v1/user
 const userRoutes = Router();
 
 const userController = new UserController();
-  
-userRoutes.get(`${BASE_PATH}`, async (req, res) => { await userController.listAll(req, res) });
+
+userRoutes.get(`${BASE_PATH}`, async (req, res) => {
+  await userController.listAll(req, res);
+});
+userRoutes.get(`${API_VERSION.V1 + ROOT_PATH.USERS}`, async (req, res) => {
+  await userController.listAll(req, res);
+});
 
 userRoutes.get(`${BASE_PATH}/:idUser`, async (req, res) => {
   await userController.getById(req, res);

@@ -6,4 +6,5 @@ export const API_VERSION = {
 export const ROOT_PATH = {
   HOME: "/",
   USER: "/user",
+  USERS: "/users",
 };
