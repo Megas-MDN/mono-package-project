@@ -15,7 +15,8 @@ const socketSetup = (server: http.Server) => {
   io.on("connection", async (socket) => {
     try {
       // const { token, idUser, vtx } = socket.handshake.auth;
-
+      console.log("connected", socket.id, "<<<-- New Socket");
+      console.log("auth", socket.handshake.auth, "<<<-- With auth");
       socket.on("sendMessage", sendMessage);
 
       socket.on("disconnect", async (reason) => {

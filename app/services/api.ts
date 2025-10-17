@@ -64,7 +64,7 @@ const app = async <T>({
 } = {}): Promise<IResponse<T>> => {
   try {
     const BASE = import.meta.env.VITE_BASE_URL || "";
-    console.log("ENV:", import.meta.env);
+
     const BASE_URL = BASE + "/api/v1";
     const nAuth = baseAuth(auth);
     const response: { data: T } = await axios({
