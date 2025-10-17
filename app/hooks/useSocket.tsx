@@ -3,7 +3,7 @@ import socket, { Socket } from "socket.io-client";
 import { type IGenericSocket, mockSocket } from "../types/socketType";
 import { useZGlobalVar } from "../stores/useZGlobalVar";
 import { useZUserProfile } from "../stores/useZUserProfile";
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3001";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 export const useSocket = () => {
   const { setIdSocket, setSocketRef } = useZGlobalVar();
