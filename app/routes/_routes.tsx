@@ -1,3 +1,4 @@
+import { ChatRouter } from "./ChatRouter";
 import { HomeRouter } from "./HomeRouter";
 
 export const routeWihtoutLayout = [
@@ -11,7 +12,7 @@ export const routeWihtoutLayout = [
 export const mainRoutes = [
   // DefaultRouter,
   HomeRouter,
-  // BroadbandRouter,
+  ChatRouter,
   // DIARouter,
   // IPTransitRouter,
   // Lan2LanRouter,

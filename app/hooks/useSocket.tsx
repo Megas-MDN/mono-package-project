@@ -26,9 +26,6 @@ export const useSocket = () => {
     });
 
     setIdSocket(socketRef.current.id as string);
-    socketRef.current.on("receiveMessage", (socketData) => {
-      console.log("receiveMessage", socketData);
-    });
 
     socketRef.current.on("connect", () => {
       setIdSocket(socketRef.current.id as string);
@@ -42,7 +39,6 @@ export const useSocket = () => {
     });
 
     return () => {
-      socketRef.current.off("receiveMessage");
       socketRef.current.off("connect");
       socketRef.current.off("disconnect");
 

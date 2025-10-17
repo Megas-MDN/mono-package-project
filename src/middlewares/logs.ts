@@ -2,9 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 export const logs = (req: Request, _res: Response, next: NextFunction) => {
   const { method, url, body, query } = req;
-  if(url.includes("/api/deploy/github")) {
-    console.log("NAO PUSSSIVU !!!!!")
-  }
+
   console.log(
     `____________________________________\n ${method} - ${url}${
       query && Object.keys(query).length

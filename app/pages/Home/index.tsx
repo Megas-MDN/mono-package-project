@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 
 interface IUser {
@@ -19,6 +20,8 @@ export const HomePage = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const getAllUsers = async () => {
     try {
@@ -66,9 +69,17 @@ export const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold text-violet-700 mb-6">
-        User Management
-      </h1>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+        <h1 className="text-3xl font-bold text-violet-700">User Management</h1>
+
+        <button
+          onClick={() => navigate("/chat")}
+          className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-5 py-2 rounded-md shadow-sm transition active:scale-95"
+        >
+          💬 Chat
+        </button>
+      </div>
 
       {/* Formulário de criação */}
       <form
@@ -125,47 +136,50 @@ export const HomePage = () => {
 
       {/* Lista de usuários */}
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">Users</h2>
-      {isLoading && users.length === 0 ? (
+      {isLoading && users && users.length === 0 ? (
         <p className="text-gray-500">Loading users...</p>
-      ) : users.length === 0 ? (
+      ) : users && users.length === 0 ? (
         <p className="text-gray-500">No users found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className="bg-white rounded-lg shadow-md p-4 border border-gray-200"
-            >
-              <h3 className="text-lg font-bold text-violet-700">{user.name}</h3>
-              <p className="text-gray-600">{user.email}</p>
-              <div className="mt-2 text-sm text-gray-500">
-                <p>ID: {user.id}</p>
-                <p>
-                  Created:{" "}
-                  {new Date(user.createdAt).toLocaleString("en-GB", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })}
-                </p>
-                <p>
-                  Updated:{" "}
-                  {new Date(user.updatedAt).toLocaleString("en-GB", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })}
-                </p>
-                {user.deletedAt && (
-                  <p className="text-red-500">
-                    Deleted:{" "}
-                    {new Date(user.deletedAt).toLocaleString("en-GB", {
+          {users &&
+            users.map((user) => (
+              <div
+                key={user.id}
+                className="bg-white rounded-lg shadow-md p-4 border border-gray-200"
+              >
+                <h3 className="text-lg font-bold text-violet-700">
+                  {user.name}
+                </h3>
+                <p className="text-gray-600">{user.email}</p>
+                <div className="mt-2 text-sm text-gray-500">
+                  <p>ID: {user.id}</p>
+                  <p>
+                    Created:{" "}
+                    {new Date(user.createdAt).toLocaleString("en-GB", {
                       dateStyle: "short",
                       timeStyle: "short",
                     })}
                   </p>
-                )}
+                  <p>
+                    Updated:{" "}
+                    {new Date(user.updatedAt).toLocaleString("en-GB", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })}
+                  </p>
+                  {user.deletedAt && (
+                    <p className="text-red-500">
+                      Deleted:{" "}
+                      {new Date(user.deletedAt).toLocaleString("en-GB", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                      })}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       )}
     </div>

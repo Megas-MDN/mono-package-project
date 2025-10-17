@@ -17,7 +17,10 @@ const socketSetup = (server: http.Server) => {
       // const { token, idUser, vtx } = socket.handshake.auth;
       console.log("connected", socket.id, "<<<-- New Socket");
       console.log("auth", socket.handshake.auth, "<<<-- With auth");
-      socket.on("sendMessage", sendMessage);
+
+      socket.on("sendMessage", (data) => {
+        sendMessage(data, socket);
+      });
 
       socket.on("disconnect", async (reason) => {
         socket.disconnect(true);
