@@ -43,7 +43,7 @@ services:
     command: sh -c "npm install prisma @prisma/client && npx prisma studio --hostname 0.0.0.0 --port 5555"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prisma-studio.rule=Host(`db.megas.uno`)"
+      - "traefik.http.routers.prisma-studio.rule=Host(`db.megas.fun`)"
       - "traefik.http.routers.prisma-studio.tls=true"
       - "traefik.http.routers.prisma-studio.tls.certresolver=lets-encrypt"
       - "traefik.http.services.prisma-studio.loadbalancer.server.port=5555"
@@ -79,7 +79,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`app.megas.uno`)"
+      - "traefik.http.routers.app.rule=Host(`app.megas.fun`)"
       - "traefik.http.routers.app.tls=true"
       - "traefik.http.routers.app.tls.certresolver=lets-encrypt"
       - "traefik.http.services.app.loadbalancer.server.port=3001"
