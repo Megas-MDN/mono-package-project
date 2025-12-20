@@ -1,0 +1,16 @@
+node_modules
+temp
+npm-debug.log
+dist
+.git
+.gitignore
+Dockerfile*
+docker-compose*
+**/*.log
+.vscode
+.idea
+coverage
+.tmp
+vercel.json
+.vercelignore
+prisma/seed.ts

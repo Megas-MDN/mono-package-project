@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.bb {
+  border-bottom: 1px solid #ff0000;
+}
+
+.bbb {
+  border-bottom: 1px solid #0d0000;
+}
+
+.bbg {
+  border-bottom: 1px solid #15f000;
+}

@@ -1,0 +1,67 @@
+# Build stage - Frontend
+FROM node:22-alpine AS frontend-builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig*.json ./
+COPY vite.config.ts ./
+
+# Install dependencies
+RUN npm ci --only=production=false
+
+# Copy frontend source
+COPY app ./app
+
+# Build frontend
+RUN npm run build:client
+
+# Build stage - Backend
+FROM node:22-alpine AS backend-builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig*.json ./
+
+# Install dependencies
+RUN npm ci --only=production=false
+
+# Copy backend source and prisma
+COPY src ./src
+COPY prisma ./prisma
+
+# Generate Prisma Client
+RUN npx prisma generate
+
+# Build backend
+RUN npm run build:server
+
+# Production stage
+FROM node:22-alpine AS production
+
+WORKDIR /app
+
+# Install production dependencies only
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy Prisma schema and generate client
+COPY prisma ./prisma
+RUN npx prisma generate
+
+# Copy built files from previous stages
+COPY --from=frontend-builder /app/public ./public
+COPY --from=backend-builder /app/dist ./dist
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3001/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start application
+CMD ["node", "dist/index.js"]
