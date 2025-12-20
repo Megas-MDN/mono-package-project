@@ -28,6 +28,6 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["vite.config.ts", "src/**/*"],
+  "include": ["vite.config.ts", "eslint.config.js"],
   "exclude": ["node_modules", "app", "dist", "**/*.spec.ts", "**/*.test.ts", "auto-deploy"]
 }
