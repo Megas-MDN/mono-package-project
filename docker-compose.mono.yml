@@ -19,12 +19,10 @@ services:
     env_file:
       - .env
     volumes:
-      - ./prisma:/app/prisma
       - app_uploads:/app/uploads
     networks:
       - shared-postgres-network
 
-    command: sh /app/docker-entrypoint.sh
     healthcheck:
       interval: 30s
       timeout: 10s
