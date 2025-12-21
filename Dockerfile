@@ -34,9 +34,10 @@ COPY --from=backend-builder /app/dist ./dist
 COPY --from=backend-builder /app/public ./public
 COPY --from=backend-builder /app/prisma ./prisma
 COPY --from=backend-builder /app/generated ./generated
+COPY --from=backend-builder /app/src ./src
 COPY --from=backend-builder /app/prisma.config.ts ./prisma.config.ts
 
 ENV NODE_ENV=production
 
-# O comando agora aguarda opostgres-network se necessário, ou apenas roda a migração e inicia
+# O comando agora roda com tsx conforme configurado no package.json
 CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
