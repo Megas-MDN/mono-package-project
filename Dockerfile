@@ -11,9 +11,6 @@ RUN npm ci
 # Copia o restante do código
 COPY . .
 
-# Gera o Prisma Client e executa o build (Frontend para /public e Backend para /dist)
-RUN npx prisma generate && npm run build
-
 # Expõe a porta da aplicação
 EXPOSE 3001
 
