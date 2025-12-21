@@ -1,111 +1,70 @@
 services:
-  db:
-    image: postgres:17-alpine
-    container_name: project-uno-db
+  postgres:
+    image: postgres:17
+    container_name: postgres
     restart: always
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: megas
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-yourpassword}
-      POSTGRES_DB: monozao_db
-      TZ: "America/Sao_Paulo"
-      PGTZ: "America/Sao_Paulo"      
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-db-postgres}
+      TZ: ${TZ:-America/Sao_Paulo}
+      PGTZ: ${TZ:-America/Sao_Paulo}
+    command: postgres -c timezone=${TZ:-America/Sao_Paulo} -c log_timezone=${TZ:-America/Sao_Paulo}
     ports:
-      - "127.0.0.1:5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U megas -d monozao_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-db-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - app-network
+      - shared-postgres-network
 
-  prisma-studio:
-    image: node:20-alpine
-    container_name: project-uno-prisma-studio
-    restart: always
-    working_dir: /app
-    ports:
-      - "127.0.0.1:5555:5555"
-    volumes:
-      - ./prisma:/app/prisma
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
-      - prisma_node_modules:/app/node_modules
-    environment:
-      DATABASE_URL: postgresql://megas:${DB_PASSWORD:-yourpassword}@db:5432/monozao_db
-    networks:
-      - app-network
-      - web
-    depends_on:
-      - db
-    command: sh -c "npm install prisma @prisma/client && npx prisma studio --hostname 0.0.0.0 --port 5555"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prisma-studio.rule=Host(`db.megas.fun`)"
-      - "traefik.http.routers.prisma-studio.tls=true"
-      - "traefik.http.routers.prisma-studio.tls.certresolver=lets-encrypt"
-      - "traefik.http.services.prisma-studio.loadbalancer.server.port=5555"
-      - "traefik.docker.network=web"
-      # 🔒 AUTENTICAÇÃO BÁSICA
-      - "traefik.http.routers.prisma-studio.middlewares=prisma-auth"
-      - "traefik.http.middlewares.prisma-auth.basicauth.users=${PRISMA_BASIC_AUTH}"
-      
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: project-uno-app
+    container_name: project-uno-app-mono
     restart: always
     ports:
       - "3001:3001"
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://megas:${DB_PASSWORD:-yourpassword}@db:5432/monozao_db
-      DIRECT_URL: postgresql://megas:${DB_PASSWORD:-yourpassword}@db:5432/monozao_db
+      DATABASE_URL: ${DIRECT_URL_DOCKER}
+      DIRECT_URL: ${DIRECT_URL}
       JWT_SECRET: ${JWT_SECRET:-yourSecret}
       X_SIGN: ${X_SIGN:-ultraSecretPassword}
       VITE_X_SIGN: ${VITE_X_SIGN:-ultraSecretPassword}
-      VITE_BASE_URL: ${VITE_BASE_URL}
-      VITE_SOCKET_URL: ${VITE_SOCKET_URL}
+      VITE_BASE_URL: ${VITE_BASE_URL:-}
+      VITE_SOCKET_URL: ${VITE_SOCKET_URL:-}
+    env_file:
+      - .env
     depends_on:
-      - db
+      postgres:
+        condition: service_healthy
     volumes:
-      - ./prisma:/app/prisma
       - app_uploads:/app/uploads
     networks:
+      - shared-postgres-network
       - app-network
-      - web
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`app.megas.fun`)"
-      - "traefik.http.routers.app.tls=true"
-      - "traefik.http.routers.app.tls.certresolver=lets-encrypt"
-      - "traefik.http.services.app.loadbalancer.server.port=3001"
-      - "traefik.docker.network=web"
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    command: sh -c "until nc -z db 5432; do echo '⏳ Waiting for Postgres...'; sleep 2; done && echo '✅ Database ready!' && npx prisma migrate deploy && node dist/index.js"
     healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 3001"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+networks:
+  shared-postgres-network:
+    external: true
+    name: shared-postgres-network
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:
-    driver: local
   app_uploads:
     driver: local
-  prisma_node_modules:
-    driver: local
-
-networks:
-  app-network:
-    driver: bridge
-  web:
-    external: true
