@@ -1,11 +1,11 @@
 # Project Uno - Fullstack Monorepo
 
 ## 🚀 Overview
-**Project Uno** is a modern Fullstack application that combines a **React 19** frontend with a **Node.js (Express)** backend, using **Prisma ORM** and **PostgreSQL**. The project is structured as a simplified monorepo where the Express server serves both the API and the static frontend assets.
+**Project Uno** is a modern Fullstack application that combines a **React 19** frontend with a **Node.js (Express)** backend, powered by the latest **Prisma 7 ORM** and **PostgreSQL**. The project is structured as a simplified monorepo where the Express server serves both the API and the static frontend assets.
 
 ### 🌟 Key Highlights
 - **Unified Workflow**: Manage frontend and backend within a single `package.json`.
-- **Modern Tech**: React 19, Vite 7 (Rolldown), Tailwind CSS 4, and TypeScript.
+- **Modern Tech**: React 19, Vite 7 (Rolldown), Tailwind CSS 4, and **Prisma 7**.
 - **Docker Ready**: Fully containerized environment with Docker and Docker Compose.
 - **Real-time**: Built-in support for WebSockets via Socket.io.
 
@@ -17,7 +17,7 @@
 | :--- | :--- |
 | **Frontend** | React 19, Vite, Tailwind CSS 4, Zustand |
 | **Backend** | Node.js, Express, TypeScript, Socket.io |
-| **Database** | PostgreSQL 17, Prisma ORM |
+| **Database** | PostgreSQL 17, **Prisma 7 ORM** |
 | **Infra/Dev** | Docker, Docker Compose, tsx, ESLint, Prettier |
 
 ---
