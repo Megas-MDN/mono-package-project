@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { API_VERSION, ROOT_PATH } from "../constants/basePathRoutes";
-import { STATUS_CODE } from "../constants/statusCode";
+import { API_VERSION, ROOT_PATH } from "../../constants/basePathRoutes";
+import { STATUS_CODE } from "../../constants/statusCode";
 import path from "path";
 
 export const notImplemented = (

@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { CustomRequest } from "../types/custom";
 import { PostService } from "../services/PostService";
-import { STATUS_CODE } from "../constants/statusCode";
+import { STATUS_CODE } from "../../constants/statusCode";
 
 export class PostController {
   private postService = new PostService();

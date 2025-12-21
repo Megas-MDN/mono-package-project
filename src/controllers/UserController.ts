@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { CustomRequest } from "../types/custom";
 import { UserService } from "../services/UserService";
-import { STATUS_CODE } from "../constants/statusCode";
+import { STATUS_CODE } from "../../constants/statusCode";
 export class UserController {
   private userService = new UserService();
 
