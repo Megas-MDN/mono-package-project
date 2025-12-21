@@ -4,6 +4,9 @@ import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import { appRoutes } from "./routes/_index";
 import { Socket } from "./Socket";
+import { registerSW } from "virtual:pwa-register";
+
+registerSW({ immediate: true });
 
 createRoot(document.getElementById("root")!).render(
   <>
