@@ -1,7 +1,7 @@
 import { prisma } from "../db/prisma";
-import { TQuery } from "../validations/Queries/listAll";
-import { TCreateUser } from "../validations/User/createUserSchema";
-import { TUpdateUser } from "../validations/User/updateUserSchema";
+import { TQuery } from "../../validations/Queries/listAll";
+import { TCreateUser } from "../../validations/User/createUserSchema";
+import { TUpdateUser } from "../../validations/User/updateUserSchema";
 
 export class UserModel {
   async totalCount(query: TQuery) {

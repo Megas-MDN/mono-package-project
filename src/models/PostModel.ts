@@ -1,7 +1,7 @@
 import { prisma } from "../db/prisma";
-import { TQuery } from "../validations/Queries/listAll";
-import { TCreatePost } from "../validations/Post/createPostSchema";
-import { TUpdatePost } from "../validations/Post/updatePostSchema";
+import { TQuery } from "../../validations/Queries/listAll";
+import { TCreatePost } from "../../validations/Post/createPostSchema";
+import { TUpdatePost } from "../../validations/Post/updatePostSchema";
 
 export class PostModel {
   async totalCount(query: TQuery) {
