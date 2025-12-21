@@ -1,43 +1,42 @@
 # Build stage - Frontend
 FROM node:24-alpine AS frontend-builder
-
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY vite.config.ts ./
-
-# Install dependencies
-RUN npm ci --only=production=false
-
-# Copy frontend source
 COPY app ./app
-
-# Build frontend
+RUN npm ci
 RUN npm run build:client
 
 # Build stage - Backend
 FROM node:24-alpine AS backend-builder
-
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY prisma.config.ts ./
-
-# Install dependencies
 RUN npm ci
-
-# Copy backend source and prisma
 COPY . .
-
-# Generate Prisma Client
+# Copia o frontend construido para a pasta public que o express servirá
+COPY --from=frontend-builder /app/public ./public
 RUN npx prisma generate
-
-# Build backend
 RUN npm run build:server
 
-# Start application
-CMD ["sh", "-c","npx prisma migrate deploy && npx prisma generate && npm run start"]
+# Final Production Image
+FROM node:24-alpine
+WORKDIR /app
+
+# Instalar netcat para o healthcheck se necessário
+RUN apk add --no-cache netcat-openbsd
+
+COPY --from=backend-builder /app/package*.json ./
+COPY --from=backend-builder /app/node_modules ./node_modules
+COPY --from=backend-builder /app/dist ./dist
+COPY --from=backend-builder /app/public ./public
+COPY --from=backend-builder /app/prisma ./prisma
+COPY --from=backend-builder /app/generated ./generated
+COPY --from=backend-builder /app/prisma.config.ts ./prisma.config.ts
+
+ENV NODE_ENV=production
+
+# O comando agora aguarda opostgres-network se necessário, ou apenas roda a migração e inicia
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
