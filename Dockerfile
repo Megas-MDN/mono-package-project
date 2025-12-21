@@ -28,11 +28,10 @@ COPY tsconfig*.json ./
 COPY prisma.config.ts ./
 
 # Install dependencies
-RUN npm ci --only=production=false
+RUN npm ci
 
 # Copy backend source and prisma
-COPY src ./src
-COPY prisma ./prisma
+COPY . .
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -40,33 +39,5 @@ RUN npx prisma generate
 # Build backend
 RUN npm run build:server
 
-# Production stage
-FROM node:24-alpine AS production
-
-WORKDIR /app
-
-# Install production dependencies only
-COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
-
-# Copy Prisma schema (useful for reference or migrations, though generate is already done in builder)
-COPY prisma ./prisma
-
-# Copy built files from previous stages
-COPY --from=frontend-builder /app/public ./public
-COPY --from=backend-builder /app/dist ./dist
-COPY --from=backend-builder /app/generated ./generated
-
-# Copy and setup entrypoint script
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh
-
-# Expose port
-EXPOSE 3001
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
-
 # Start application
-CMD ["node", "dist/src/index.js"]
+CMD ["sh", "-c","npx prisma migrate deploy && npx prisma generate && npm run start"]
