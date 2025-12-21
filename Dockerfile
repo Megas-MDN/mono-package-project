@@ -57,6 +57,10 @@ COPY --from=frontend-builder /app/public ./public
 COPY --from=backend-builder /app/dist ./dist
 COPY --from=backend-builder /app/generated ./generated
 
+# Copy and setup entrypoint script
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
 # Expose port
 EXPOSE 3001
 
