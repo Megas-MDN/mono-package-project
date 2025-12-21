@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const alphanumericString = z
   .string()
-  .regex(/^[a-zA-Z0-9]*$/, "Search can only contain alphanumeric characters");
+  .regex(/^[a-zA-Z0-9\sÀ-ÿ\-_.,!?;:()&]*$/, "Search contains invalid characters");
 
 export const querySchema = z.object({
   search: alphanumericString.optional(),
