@@ -24,7 +24,7 @@ services:
     networks:
       - shared-postgres-network
 
-    command: sh -c "npx prisma migrate deploy && node dist/src/index.js"
+    command: sh -c "if [ -z \"$DATABASE_URL\" ]; then echo 'ERROR: DATABASE_URL not set'; exit 1; fi && npx prisma migrate deploy && node dist/src/index.js"
     healthcheck:
       interval: 30s
       timeout: 10s
