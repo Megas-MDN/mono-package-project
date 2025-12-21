@@ -16,11 +16,14 @@ services:
       VITE_X_SIGN: ${VITE_X_SIGN:-ultraSecretPassword}
       VITE_BASE_URL: ${VITE_BASE_URL}
       VITE_SOCKET_URL: ${VITE_SOCKET_URL}
+    env_file:
+      - .env
     volumes:
       - ./prisma:/app/prisma
       - app_uploads:/app/uploads
     networks:
-      - app-network
+      - shared-postgres-network
+
     command: sh -c "npx prisma migrate deploy && node dist/src/index.js"
     healthcheck:
       interval: 30s
@@ -33,5 +36,5 @@ volumes:
     driver: local
 
 networks:
-  app-network:
-    driver: bridge
+  shared-postgres-network:
+    external: true
