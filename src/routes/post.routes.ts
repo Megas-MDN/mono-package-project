@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { PostController } from "../controllers/PostController";
 
-import { API_VERSION, ROOT_PATH } from "../constants/basePathRoutes";
+import { API_VERSION, ROOT_PATH } from "../../constants/basePathRoutes";
 
 const BASE_PATH = API_VERSION.V1 + ROOT_PATH.POST; 
 
