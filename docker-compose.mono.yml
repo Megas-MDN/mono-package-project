@@ -22,7 +22,7 @@ services:
     volumes:
       - app_uploads:/app/uploads
     networks:
-      - shared-postgres-network
+      - app-network
 
     healthcheck:
       interval: 30s
@@ -35,5 +35,5 @@ volumes:
     driver: local
 
 networks:
-  shared-postgres-network:
-    external: true
+  app-network:
+    driver: bridge
