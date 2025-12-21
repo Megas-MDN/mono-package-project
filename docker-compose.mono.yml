@@ -10,8 +10,8 @@ services:
     environment:
       NODE_ENV: production
       # Usamos 'postgres' que é o nome do container na rede shared-postgres-network
-      DATABASE_URL: ${DATABASE_URL_DOCKER:-postgresql://user:password@postgres:5432/db-postgres?schema=public}
-      DIRECT_URL: ${DIRECT_URL_DOCKER:-postgresql://user:password@postgres:5432/db-postgres?schema=public}
+      DATABASE_URL: ${DATABASE_URL}
+      DIRECT_URL: ${DIRECT_URL}
       JWT_SECRET: ${JWT_SECRET:-yourSecret}
       X_SIGN: ${X_SIGN:-ultraSecretPassword}
       VITE_X_SIGN: ${VITE_X_SIGN:-ultraSecretPassword}
