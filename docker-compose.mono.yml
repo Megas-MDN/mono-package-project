@@ -10,7 +10,7 @@ services:
     environment:
       NODE_ENV: production
       # Usamos 'postgres' que é o nome do container na rede shared-postgres-network
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: ${DIRECT_URL_DOCKER}
       DIRECT_URL: ${DIRECT_URL}
       JWT_SECRET: ${JWT_SECRET:-yourSecret}
       X_SIGN: ${X_SIGN:-ultraSecretPassword}
@@ -22,6 +22,7 @@ services:
     volumes:
       - app_uploads:/app/uploads
     networks:
+      - shared-postgres-network
       - app-network
 
     healthcheck:
@@ -35,5 +36,8 @@ volumes:
     driver: local
 
 networks:
+  shared-postgres-network:
+    external: true
+    name: shared-postgres-network
   app-network:
     driver: bridge
