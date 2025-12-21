@@ -6,24 +6,21 @@ const alphanumericString = z
 
 export const querySchema = z.object({
   search: alphanumericString.optional(),
-  page: z
-    .string()
+  page: z.union([z.string(), z.number()])
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : undefined))
+    .transform((val) => (val ? parseInt(val.toString(), 10) : undefined))
     .refine((val) => val === undefined || !isNaN(val), {
       message: "Page must be a valid number",
     }),
-  limit: z
-    .string()
+  limit: z.union([z.string(), z.number()])
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : undefined))
+    .transform((val) => (val ? parseInt(val.toString(), 10) : undefined))
     .refine((val) => val === undefined || !isNaN(val), {
       message: "Limit must be a valid number",
     }),
-  offset: z
-    .string()
+  offset: z.union([z.string(), z.number()])
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : undefined))
+    .transform((val) => (val ? parseInt(val.toString(), 10) : undefined))
     .refine((val) => val === undefined || !isNaN(val), {
       message: "Offset must be a valid number",
     }),
