@@ -49,10 +49,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production && npm cache clean --force
 
-# Copy Prisma schema and generate client
+# Copy Prisma schema (useful for reference or migrations, though generate is already done in builder)
 COPY prisma ./prisma
-COPY prisma.config.ts ./
-RUN npx prisma generate
 
 # Copy built files from previous stages
 COPY --from=frontend-builder /app/public ./public
