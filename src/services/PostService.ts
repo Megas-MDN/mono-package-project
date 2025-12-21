@@ -1,7 +1,7 @@
 import { PostModel } from "../models/PostModel";
-import { querySchema } from "../validations/Queries/listAll";
-import { createPostSchema } from "../validations/Post/createPostSchema";
-import { updatePostSchema } from "../validations/Post/updatePostSchema";
+import { querySchema } from "../../validations/Queries/listAll";
+import { createPostSchema } from "../../validations/Post/createPostSchema";
+import { updatePostSchema } from "../../validations/Post/updatePostSchema";
 
 export class PostService {
   private postModel = new PostModel()

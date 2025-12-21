@@ -1,7 +1,7 @@
 import { UserModel } from "../models/UserModel";
-import { querySchema } from "../validations/Queries/listAll";
-import { createUserSchema } from "../validations/User/createUserSchema";
-import { updateUserSchema } from "../validations/User/updateUserSchema";
+import { querySchema } from "../../validations/Queries/listAll";
+import { createUserSchema } from "../../validations/User/createUserSchema";
+import { updateUserSchema } from "../../validations/User/updateUserSchema";
 
 export class UserService {
   private userModel = new UserModel()
