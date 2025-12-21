@@ -25,7 +25,7 @@
     "dc:shell": "docker compose exec app sh",
     "dc:db:shell": "docker compose exec db psql -U megas -d monozao_db",
     "dcm:build": "docker compose -f docker-compose.mono.yml build",
-    "dcm:up": "docker compose -f docker-compose.mono.yml up -d --build --remove-orphans",
+    "dcm:up": "docker compose -f docker-compose.mono.yml up -d --remove-orphans",
     "dcm:down": "docker compose -f docker-compose.mono.yml down --remove-orphans",
     "dcm:restart": "docker compose -f docker-compose.mono.yml restart",
     "dcm:logs": "docker compose -f docker-compose.mono.yml logs -f",
