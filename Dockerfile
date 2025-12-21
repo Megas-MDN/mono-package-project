@@ -25,7 +25,7 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 COPY tsconfig*.json ./
-COPY prisma.config.js ./
+COPY prisma.config.ts ./
 
 # Install dependencies
 RUN npm ci --only=production=false
@@ -51,7 +51,7 @@ RUN npm ci --only=production && npm cache clean --force
 
 # Copy Prisma schema and generate client
 COPY prisma ./prisma
-COPY prisma.config.js ./
+COPY prisma.config.ts ./
 RUN npx prisma generate
 
 # Copy built files from previous stages
