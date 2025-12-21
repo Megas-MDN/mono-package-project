@@ -1,4 +1,4 @@
-# Project Uno - Fullstack Package
+# Project Uno - Fullstack Mono Package
 
 ## 🚀 Overview
 **Project Uno** is a modern Fullstack application that combines a **React 19** frontend with a **Node.js (Express)** backend, powered by the latest **Prisma 7 ORM** and **PostgreSQL**. The project is structured as a simplified monorepo where the Express server serves both the API and the static frontend assets.
@@ -53,7 +53,7 @@ npm install
 ### 3. Local Development
 To run both frontend and backend simultaneously with Hot Reload:
 ```bash
-yarn dev # or npm run dev
+npm run dev
 ```
 - **Frontend**: http://localhost:5173
 - **API**: http://localhost:3001
@@ -61,13 +61,13 @@ yarn dev # or npm run dev
 ### 4. Running with Docker (Recommended)
 To start the full environment (App + Database):
 ```bash
-yarn dc:up   # Start containers
-yarn dc:logs # Follow logs
+npm run dc:up   # Start containers
+npm run dc:logs # Follow logs
 ```
 
 To reset the database (clear volumes):
 ```bash
-yarn dc:clean
+npm run dc:clean
 ```
 
 ---
@@ -76,14 +76,14 @@ yarn dc:clean
 
 | Script | Description |
 | :--- | :--- |
-| `yarn dev` | Starts Frontend (Vite) + Backend (tsx watch) concurrently. |
-| `yarn build` | Builds both the Client (React) and the Server (TS). |
-| `yarn start` | Starts the production server using `tsx`. |
-| `yarn dc:up` | Starts the App and Postgres containers via Docker Compose. |
-| `yarn dc:down` | Stops and removes the containers. |
-| `yarn dc:clean`| Removes containers, volumes, and orphan images (Total Reset). |
-| `yarn dc:logs` | View real-time logs. |
-| `yarn dc:rebuild` | Rebuilds the app image and restarts containers. |
+| `npm run dev` | Starts Frontend (Vite) + Backend (tsx watch) concurrently. |
+| `npm run build` | Builds both the Client (React) and the Server (TS). |
+| `npm run start` | Starts the production server using `tsx`. |
+| `npm run dc:up` | Starts the App and Postgres containers via Docker Compose. |
+| `npm run dc:down` | Stops and removes the containers. |
+| `npm run dc:clean`| Removes containers, volumes, and orphan images (Total Reset). |
+| `npm run dc:logs` | View real-time logs. |
+| `npm run dc:rebuild` | Rebuilds the app image and restarts containers. |
 
 ---
 
