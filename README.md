@@ -1,4 +1,4 @@
-# Project Uno - Fullstack Monorepo
+# Project Uno - Fullstack Package
 
 ## 🚀 Overview
 **Project Uno** is a modern Fullstack application that combines a **React 19** frontend with a **Node.js (Express)** backend, powered by the latest **Prisma 7 ORM** and **PostgreSQL**. The project is structured as a simplified monorepo where the Express server serves both the API and the static frontend assets.
