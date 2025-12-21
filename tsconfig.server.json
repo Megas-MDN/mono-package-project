@@ -18,6 +18,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "generated/**/*"],
+  "include": ["src/**/*", "generated/**/*", "constants/**/*", "validations/**/*"],
   "exclude": ["node_modules", "dist", "app", "public", "**/*.spec.ts", "**/*.test.ts"]
 }
