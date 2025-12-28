@@ -14,10 +14,15 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  name           String?
+  password       String
+  otpCode        String?
+  otpExpiresAt   DateTime?
+  socketId       String?
+  lastLoginDate  DateTime?
+  posts          Post[]
 }
 
 model Post {

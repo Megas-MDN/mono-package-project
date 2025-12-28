@@ -9,12 +9,14 @@ export interface IResponse<T> {
 
 export const baseAuth = (auth: Record<string, unknown> = {}) => {
   const signature = import.meta.env.VITE_SIGN_HASH || "";
+  const token = localStorage.getItem("@fabricjs:token");
 
   return {
     headers: {
       "x-sign": signature,
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...auth,
     },
   };

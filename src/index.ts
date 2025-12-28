@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { app } from "./app";
 import { socketSetup, getIO } from "./socket";
 import http from "http";

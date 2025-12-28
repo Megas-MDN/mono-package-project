@@ -4,6 +4,7 @@ export const ROOT_PATH = {
   USERS: "/users",
   POST: "/post",
   POSTS: "/posts",
+  AUTH: "/auth",
 };
 
 export const API_VERSION = {

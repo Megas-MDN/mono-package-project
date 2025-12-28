@@ -1,10 +1,11 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { mainRoutes, routeWihtoutLayout } from "./_routes";
+import { ProtectedRoute } from "../components/ProtectedRoute";
 
 export const appRoutes = createBrowserRouter(
   [
     {
-      element: <Outlet />,
+      element: <ProtectedRoute />,
       children: mainRoutes,
     },
     ...routeWihtoutLayout,

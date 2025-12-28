@@ -14,7 +14,7 @@ export const useSocket = () => {
   ) as React.RefObject<Socket | IGenericSocket>;
 
   useEffect(() => {
-    // if (idUser && token) {
+    if (idUser && token) {
     socketRef.current = socket(SOCKET_URL, {
       query: {},
       auth: { token, idUser },
@@ -31,7 +31,7 @@ export const useSocket = () => {
       setIdSocket(socketRef.current.id as string);
       setSocketRef(socketRef.current as Socket);
     });
-    // }
+    }
 
     socketRef.current.on("disconnect", () => {
       socketRef.current = mockSocket;

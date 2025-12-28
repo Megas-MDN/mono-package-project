@@ -2,13 +2,10 @@ import { ChatRouter } from "./ChatRouter";
 import { HomeRouter } from "./HomeRouter";
 import { UsersRouter } from "./UsersRouter";
 import { PostsRouter } from "./PostsRouter";
+import { AuthRoutes } from "./AuthRouter";
 
 export const routeWihtoutLayout = [
-  // LoginRouter,
-  // RegisterRouter,
-  // VerifyPinCodeRouter,
-  // RecoverAccountRouter,
-  // RestorePasswordRouter,
+  ...AuthRoutes,
 ];
 
 export const mainRoutes = [
